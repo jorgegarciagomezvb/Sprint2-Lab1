@@ -1,4 +1,5 @@
 import { urls } from "./constant.js";
+import { formatDateAgo } from "./utils.js";
 
 (async function () {
   const { posts } = await fetch(urls.post).then((res) => res.json());
@@ -6,7 +7,7 @@ import { urls } from "./constant.js";
 
   const listOfPost = document.querySelector(".posts");
   listOfPost.innerHTML = "";
-  posts.forEach((post) => listOfPost.appendChild(generatePost(post)));
+  posts.forEach((post) => listOfPost.appendChild(generatePost(post))); 
 
   function generatePost(post) {
     const postElemment = document.createElement("article");
@@ -24,7 +25,7 @@ import { urls } from "./constant.js";
     postHeaderTitle.className = "post-title";
 
     const postDate = document.createElement("p");
-    postDate.textContent = post.date;
+    postDate.textContent = formatDateAgo(post.date);
     postDate.className = "post-date";
 
     const postFooter = document.createElement("footer");
