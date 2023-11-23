@@ -2,9 +2,11 @@ import { urls } from "./constant.js";
 import { formatDateAgo } from "./utils.js";
 
 (async function () {
-  const { posts } = await fetch(urls.post).then((res) => res.json());
-  console.log(posts);
-
+    const loader = document.querySelector('.loader-container');
+    loader.classList.remove('hidden');
+    const { posts } = await fetch(urls.post).then((res) => res.json());
+    loader.classList.add('hidden');
+    
   const listOfPost = document.querySelector(".posts");
   listOfPost.innerHTML = "";
   posts.forEach((post) => listOfPost.appendChild(generatePost(post))); 
@@ -50,12 +52,12 @@ import { formatDateAgo } from "./utils.js";
   function goToPostDetail(e){
     e.preventDefault();
     const id = e.currentTarget.dataset.id;
+    loader.classList.remove('hidden');
     
     fetch(urls[id])
     .then(res=> res.json())
-    .then(post => generatePostDetail(post));
-
-    //const post = posts.find(post => post.id === id);
+    .then(post => generatePostDetail(post))
+    .finally(()=>loader.classList.add('hidden'));
   }
 
   function generatePostDetail(post){
